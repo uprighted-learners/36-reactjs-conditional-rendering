@@ -28,31 +28,42 @@ const Greet = (props) => {
         <div>
             You are
             <b>
-                {isLoggedIn ? "" : "not"}
+                {isLoggedIn ? " " : "not "}
             </b>
-            logged in!
+            {" "}logged in!
         </div>
     )
 }
 
 export default function LoginControl() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     // handle login
     function handleLoginClick() {
-        setIsLoggedIn(true)
+        setIsLoading(true)
+        setTimeout(() => {
+            setIsLoading(false)
+            setIsLoggedIn(true)
+        }, 2000)
     }
 
     // handle logout
     function handleLogoutClick() {
-        setIsLoggedIn(false)
+        setIsLoading(true)
+        setTimeout(() => {
+            setIsLoading(false)
+            setIsLoggedIn(false)
+        }, 2000)
     }
 
     // conditionally render the appropriate button based on the isLoggedIn state
     let button;
 
     // if isLoggedIn is true, render the LogoutButton component
-    if (isLoggedIn) {
+    if (isLoading) {
+        button = <button disabled>Loading...</button>
+    } else if (isLoggedIn) {
         button = <LogoutButton onClick={handleLogoutClick} />
     } else {
         button = <LoginButton onClick={handleLoginClick} />
